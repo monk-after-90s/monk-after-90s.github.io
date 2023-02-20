@@ -1,19 +1,33 @@
-import {createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw} from 'vue-router'
-import HelloWorld from "../components/HelloWorld.vue"
-import Demo from "../components/demo.vue"
+import {createRouter, createWebHashHistory, RouteRecordRaw} from 'vue-router'
+import Index from "../components/index.vue"
+import Tv from "../components/tv.vue"
+import Movie from "../components/movie.vue"
+import Sport from "../components/sport.vue"
 
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
-        component: HelloWorld
+        name: 'Index',
+        component: Index
     },
     {
-        path: '/demo',
-        component: Demo
-    }
+        path: '/tv',
+        name: 'Tv',
+        component: Tv
+    },
+    {
+        path: '/movie',
+        name: 'Movie',
+        component: Movie
+    },
+    {
+        path: '/sport',
+        name: 'Sport',
+        component: Sport
+    },
 ]
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),
     routes
 })
 export default router
