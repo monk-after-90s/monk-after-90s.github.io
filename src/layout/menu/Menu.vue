@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import MenuLogoVue from "./MenuLogo.vue"
 import MenueItem from "./MenueItem.vue"
-import {ref} from "vue"
+import {ref, computed} from "vue"
+import {useStore} from 'vuex'
 
-let isCollapse = ref(true)
-let logoStyle = isCollapse ? "display: none" : ""
+const store = useStore()
+
+let isCollapse = computed(() => {
+  return store.getters.getCollapse
+})
 
 </script>
 
 <template>
   <!--  Logo区域-->
-  <MenuLogoVue class="layout-logo" :style='logoStyle'/>
+  <MenuLogoVue class="layout-logo" v-if="!isCollapse"/>
   <!--  侧边栏导航-->
   <el-menu
       active-text-color="#ffd04b"

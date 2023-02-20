@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import {ref} from 'vue'
+import {ref, computed} from 'vue'
+import {useStore} from 'vuex'
 
-let isCollapse = ref(false)
-let changeCollapse = () => {
-  isCollapse.value = !isCollapse.value
-  console.log(isCollapse.value)
+const store = useStore()
+let isCollapse = computed(() => {
+  return store.getters.getCollapse
+})
+
+function changeCollapse() {
+  store.commit('setCollapse', !store.getters.getCollapse)
 }
 </script>
 
 <template>
   <el-icon>
-    <component class="icons" is='Fold' @click="changeCollapse"></component>
+    <component class="icons" :is='isCollapse?"Expand":"Fold"' @click="changeCollapse"></component>
   </el-icon>
 </template>
 
