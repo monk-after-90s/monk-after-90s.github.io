@@ -113,14 +113,23 @@ let menuList = reactive([
   <template v-for="menu in menuList">
     <el-sub-menu v-if="menu.children && menu.children.length>0" :index="menu.path">
       <template #title>
+        <el-icon>
+          <component class="icons" :is="menu.meta.icon"></component>
+        </el-icon>
         <span style="padding-left: 10px">{{ menu.meta.title }}</span>
       </template>
       <el-menu-item v-for="submenu in menu.children" :index="menu.path">
+        <el-icon>
+          <component class="icons" :is="submenu.meta.icon"></component>
+        </el-icon>
         {{ submenu.meta.title }}
       </el-menu-item>
     </el-sub-menu>
-    <el-menu-item v-else :index="menu.path"><span>{{ menu.meta.title }}</span></el-menu-item>
-
+    <el-menu-item v-else :index="menu.path">
+      <el-icon>
+        <component class="icons" :is="menu.meta.icon"></component>
+      </el-icon>
+      <span>{{ menu.meta.title }}</span></el-menu-item>
   </template>
 </template>
 

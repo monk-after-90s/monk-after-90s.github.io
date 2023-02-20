@@ -12,7 +12,11 @@ import Menu from "./menu/Menu.vue"
       <el-header class="header">
         <Header/>
       </el-header>
-      <el-main class="main">Main</el-main>
+      <el-main class="main">Main
+        <el-icon style="color: red">
+          <Edit/>
+        </el-icon>
+      </el-main>
     </el-container>
   </el-container>
 </template>
