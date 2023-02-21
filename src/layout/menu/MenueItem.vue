@@ -118,7 +118,7 @@ let menuList = reactive([
         </el-icon>
         <span style="padding-left: 10px">{{ menu.meta.title }}</span>
       </template>
-      <el-menu-item v-for="submenu in menu.children" :index="menu.path">
+      <el-menu-item v-for="submenu in menu.children" :index="submenu.path">
         <el-icon>
           <component class="icons" :is="submenu.meta.icon"></component>
         </el-icon>

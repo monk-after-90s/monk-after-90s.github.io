@@ -23,7 +23,7 @@ let isCollapse = computed(() => {
       default-active="2"
       text-color="#fff"
       :collapse="isCollapse"
-      router="router">
+      router>
     <MenueItem/>
   </el-menu>
 </template>
