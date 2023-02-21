@@ -10,7 +10,7 @@ let menuList = reactive([
     },
   },
   {
-    path: "/baisc",
+    path: "/basic",
     meta: {
       title: "基础数据",
       icon: "Setting",

@@ -22,7 +22,8 @@ let isCollapse = computed(() => {
       class="el-menu-vertical-demo"
       default-active="2"
       text-color="#fff"
-      :collapse="isCollapse">
+      :collapse="isCollapse"
+      router="router">
     <MenueItem/>
   </el-menu>
 </template>
