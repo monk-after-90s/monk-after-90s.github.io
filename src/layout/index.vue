@@ -21,6 +21,10 @@ import Menu from "./menu/Menu.vue"
 
 
 <style scoped>
+.aside {
+  height: 100vh;
+}
+
 .layout {
   height: 100%;
 }
