@@ -37,8 +37,4 @@ import Menu from "./menu/Menu.vue"
   align-items: center;
   justify-content: space-between;
 }
-
-.main {
-  background-color: lightseagreen;
-}
 </style>
