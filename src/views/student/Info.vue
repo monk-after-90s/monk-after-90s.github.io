@@ -115,8 +115,8 @@ autoRun()
     <el-table-column prop="name" label="姓名" width="80px" align="center" />
     <el-table-column prop="gender" label="性别" width="55px" align="center" />
     <el-table-column prop="birthday" label="出生日期" width="100px" align="center" />
-    <el-table-column prop="faculty" label="院系" align="center" />
-    <el-table-column prop="major" label="专业" align="center" />
+    <el-table-column prop="major.faculty.name" label="院系" align="center" />
+    <el-table-column prop="major.name" label="专业" align="center" />
     <el-table-column prop="mobile" label="电话" align="center" />
     <el-table-column prop="email" label="邮箱" align="center" />
     <el-table-column prop="address" label="地址" align="center" />
