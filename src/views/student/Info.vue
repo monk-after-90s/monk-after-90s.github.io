@@ -110,17 +110,17 @@ autoRun()
 
   <el-table border style="width: 100%" :data="Data.students" stripe
     :header-cell-style="{ backgroundColor: '#409EFF', color: '#FFF', fontSize: '14px' }">
-    <el-table-column label="序号" width="60px" type="index" align="center" />
-    <el-table-column prop="sno" label="学号" width="80px" align="center" />
-    <el-table-column prop="name" label="姓名" width="80px" align="center" />
-    <el-table-column prop="gender" label="性别" width="55px" align="center" />
-    <el-table-column prop="birthday" label="出生日期" width="100px" align="center" />
-    <el-table-column prop="major.faculty.name" label="院系" align="center" />
-    <el-table-column prop="major.name" label="专业" align="center" />
-    <el-table-column prop="mobile" label="电话" align="center" />
-    <el-table-column prop="email" label="邮箱" align="center" />
-    <el-table-column prop="address" label="地址" align="center" />
-    <el-table-column label="操作" align="center">
+    <el-table-column label="序号" width="60px" type="index" align="center" show-overflow-tooltip />
+    <el-table-column prop="sno" label="学号" width="80px" align="center" show-overflow-tooltip />
+    <el-table-column prop="name" label="姓名" width="80px" align="center" show-overflow-tooltip />
+    <el-table-column prop="gender" label="性别" width="55px" align="center" show-overflow-tooltip />
+    <el-table-column prop="birthday" label="出生日期" width="100px" align="center" show-overflow-tooltip />
+    <el-table-column prop="major.faculty.name" label="院系" align="center" show-overflow-tooltip />
+    <el-table-column prop="major.name" label="专业" align="center" show-overflow-tooltip />
+    <el-table-column prop="mobile" label="电话" align="center" show-overflow-tooltip />
+    <el-table-column prop="email" label="邮箱" align="center" show-overflow-tooltip />
+    <el-table-column prop="address" label="地址" align="center" show-overflow-tooltip />
+    <el-table-column label="操作" align="center" show-overflow-tooltip>
       <el-button type="primary" :icon="More" circle size="small" />
       <el-button type="warning" :icon="Edit" circle size="small" />
       <el-button type="danger" :icon="Delete" circle size="small" />
