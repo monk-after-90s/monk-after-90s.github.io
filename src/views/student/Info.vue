@@ -2,8 +2,8 @@
 import { CirclePlus, List, Search, Edit, More, Delete } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { ref, reactive } from 'vue'
-import axios from 'axios'
-import request from '../../utils/request'
+import studentsApi from '../../api/students'
+
 
 let Data = reactive({
   // =============查询区域==============
@@ -52,7 +52,7 @@ function handleCurrentChange(page: any) {
 }
 
 const getStudents = () => {
-  request.get('students/', { params: { page: Data.currentPage, size: Data.pageSize } }).then((res) => {
+  studentsApi.getAll({ page: Data.currentPage, size: Data.pageSize }).then((res) => {
     if (res.status === 200) {
       Data.students = res.data.results
       Data.total = res.data.count
