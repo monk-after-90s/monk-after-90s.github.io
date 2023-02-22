@@ -2,7 +2,7 @@
 import { CirclePlus, List, Search, Edit, More, Delete } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { ref, reactive } from 'vue'
-import studentsApi from '../../api/students'
+import Api from '../../api'
 
 
 let Data = reactive({
@@ -52,7 +52,7 @@ function handleCurrentChange(page: any) {
 }
 
 const getStudents = () => {
-  studentsApi.getAll({ page: Data.currentPage, size: Data.pageSize }).then((res) => {
+  Api.students.getAll({ page: Data.currentPage, size: Data.pageSize }).then((res) => {
     if (res.status === 200) {
       Data.students = res.data.results
       Data.total = res.data.count

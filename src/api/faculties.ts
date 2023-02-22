@@ -4,21 +4,21 @@ export default {
     getAll: (params: any) => {
         return request({
             method: 'get',
-            url: 'majors/',
+            url: 'faculties/',
             params
         })
     },
     add: (data: any) => {
         return request({
             method: 'post',
-            url: 'majors/',
+            url: 'faculties/',
             data
         })
     },
     edit: (id: any, data: any) => {
         return request({
             method: 'put',
-            url: `majors/${id}/`,
+            url: `faculties/${id}/`,
             data
         })
     },
@@ -26,7 +26,7 @@ export default {
     del: (id: any) => {
         return request({
             method: 'delete',
-            url: `majors/${id}/`
+            url: `faculties/${id}/`
         })
     }
 
