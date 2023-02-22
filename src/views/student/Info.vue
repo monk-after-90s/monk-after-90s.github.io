@@ -49,7 +49,14 @@ const getMajors = () => {
   })
 }
 const getStudents = () => {
-  Api.students.getAll({page: Data.currentPage, size: Data.pageSize, search: Data.q_str}).then((res) => {
+  Api.students.getAll(
+      {
+        page: Data.currentPage,
+        size: Data.pageSize,
+        search: Data.q_str,
+        faculty: Data.facultySelected
+      }
+  ).then((res) => {
     if (res.status === 200) {
       Data.students = res.data.results
       Data.total = res.data.count
@@ -64,6 +71,7 @@ const getStudents = () => {
 }
 const listAllStudents = () => {
   Data.q_str = ''
+  Data.facultySelected = ''
   getStudents()
 }
 const autoRun = () => {
