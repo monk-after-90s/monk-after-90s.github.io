@@ -1,7 +1,7 @@
 import request from "../utils/request"
 
 export default {
-    getAll: (params: any) => {
+    getAll: (params?: any) => {
         return request({
             method: 'get',
             url: 'majors/',
