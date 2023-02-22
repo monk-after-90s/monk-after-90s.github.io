@@ -3,6 +3,7 @@ import { CirclePlus, List, Search, Edit, More, Delete } from '@element-plus/icon
 import { ElMessage } from 'element-plus'
 import { ref, reactive } from 'vue'
 import axios from 'axios'
+import request from '../../utils/request'
 
 let Data = reactive({
   // =============查询区域==============
@@ -51,19 +52,18 @@ function handleCurrentChange(page: any) {
 }
 
 const getStudents = () => {
-  axios.get("http://192.168.8.112:8000/api/v1/students/",
-    { params: { page: Data.currentPage, size: Data.pageSize } }).then((res) => {
-      if (res.status === 200) {
-        Data.students = res.data.results
-        Data.total = res.data.count
-        ElMessage({
-          message: '数据加载成功！',
-          type: 'success',
-        })
-      }
-    }).catch((error) => {
-      console.log(error)
-    })
+  request.get('students/', { params: { page: Data.currentPage, size: Data.pageSize } }).then((res) => {
+    if (res.status === 200) {
+      Data.students = res.data.results
+      Data.total = res.data.count
+      ElMessage({
+        message: '数据加载成功！',
+        type: 'success',
+      })
+    }
+  }).catch((error) => {
+    console.log(error)
+  })
 }
 
 const autoRun = () => {
