@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { CirclePlus, List, Search, Edit, More, Delete } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
 import { ref, reactive } from 'vue'
+import axios from 'axios'
 
 let Data = reactive({
   // =============查询区域==============
@@ -30,41 +32,44 @@ let Data = reactive({
   ]),
   majorSelected: ref(''),
   // =============表格区域==============
-  students: reactive([
-    {
-      sno: '950001',
-      name: '张三',
-      gender: '男',
-      birthday: '2001-10-10',
-      faculty: '计算机学院',
-      major: '计算机网络',
-      mobile: 13445354323,
-      email: 'zhangsan@123.com',
-      address: '上海市闵行区'
-    },
-    {
-      sno: '950001',
-      name: '张三',
-      gender: '男',
-      birthday: '2001-10-10',
-      faculty: '计算机学院',
-      major: '计算机网络',
-      mobile: 13445354323,
-      email: 'zhangsan@123.com',
-      address: '上海市闵行区'
-    },
-
-  ]),
+  students: reactive([]),
   //=============分页区域===============
   currentPage: ref(1),
-  pageSize: ref(15),
+  pageSize: ref(17),
   total: ref(0)
 })
 //分页中修改pageSize
-const handleSizeChange = () => { }
-//分页中修改currentSize
-function handleCurrentChange() {
+const handleSizeChange = (size: any) => {
+  //修改每页的记录条数
+  Data.pageSize = size
+  getStudents()
 }
+//分页中修改currentSize
+function handleCurrentChange(page: any) {
+  Data.currentPage = page
+  getStudents()
+}
+
+const getStudents = () => {
+  axios.get("http://192.168.8.112:8000/api/v1/students/",
+    { params: { page: Data.currentPage, size: Data.pageSize } }).then((res) => {
+      if (res.status === 200) {
+        Data.students = res.data.results
+        Data.total = res.data.count
+        ElMessage({
+          message: '数据加载成功！',
+          type: 'success',
+        })
+      }
+    }).catch((error) => {
+      console.log(error)
+    })
+}
+
+const autoRun = () => {
+  getStudents()
+}
+autoRun()
 </script>
 
 <template>
@@ -107,7 +112,7 @@ function handleCurrentChange() {
     :header-cell-style="{ backgroundColor: '#409EFF', color: '#FFF', fontSize: '14px' }">
     <el-table-column label="序号" width="60px" type="index" align="center" />
     <el-table-column prop="sno" label="学号" width="80px" align="center" />
-    <el-table-column prop="name" label="姓名" width="60px" align="center" />
+    <el-table-column prop="name" label="姓名" width="80px" align="center" />
     <el-table-column prop="gender" label="性别" width="55px" align="center" />
     <el-table-column prop="birthday" label="出生日期" width="100px" align="center" />
     <el-table-column prop="faculty" label="院系" align="center" />
@@ -121,9 +126,10 @@ function handleCurrentChange() {
       <el-button type="danger" :icon="Delete" circle size="small" />
     </el-table-column>
   </el-table>
+
   <el-pagination style="margin-top: 20px;" background v-model:current-page="Data.currentPage"
     v-model:page-size="Data.pageSize" :page-sizes="[10, 12, 15, 20, 25, 30, 32, 35, 40]"
-    layout="total, sizes, prev, pager, next, jumper" :total="400" @size-change="handleSizeChange"
+    layout="total, sizes, prev, pager, next, jumper" :total="Data.total" @size-change="handleSizeChange"
     @current-change="handleCurrentChange" />
 </template>
 
