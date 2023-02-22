@@ -54,7 +54,8 @@ const getStudents = () => {
         page: Data.currentPage,
         size: Data.pageSize,
         search: Data.q_str,
-        faculty: Data.facultySelected
+        faculty: Data.facultySelected,
+        major: Data.majorSelected
       }
   ).then((res) => {
     if (res.status === 200) {
@@ -72,6 +73,7 @@ const getStudents = () => {
 const listAllStudents = () => {
   Data.q_str = ''
   Data.facultySelected = ''
+  Data.majorSelected = ''
   getStudents()
 }
 const autoRun = () => {
@@ -92,7 +94,7 @@ autoRun()
       </el-select>
     </el-form-item>
     <el-form-item label="专业:">
-      <el-select placeholder="请选择专业" v-model="Data.majorSelected">
+      <el-select placeholder="请选择专业" v-model="Data.majorSelected" clearable filterable>
         <el-option v-for="item in Data.majorOptions" :key="item.id" :value="item.id" :label="item.name"/>
       </el-select>
     </el-form-item>
