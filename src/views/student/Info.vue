@@ -49,7 +49,7 @@ const getMajors = () => {
   })
 }
 const getStudents = () => {
-  Api.students.getAll({page: Data.currentPage, size: Data.pageSize}).then((res) => {
+  Api.students.getAll({page: Data.currentPage, size: Data.pageSize, search: Data.q_str}).then((res) => {
     if (res.status === 200) {
       Data.students = res.data.results
       Data.total = res.data.count
@@ -62,7 +62,10 @@ const getStudents = () => {
     console.log(error)
   })
 }
-
+const listAllStudents = () => {
+  Data.q_str = ''
+  getStudents()
+}
 const autoRun = () => {
   getStudents()
   getFaculties()
@@ -86,13 +89,13 @@ autoRun()
       </el-select>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary">
+      <el-button type="primary" @click="getStudents">
         <el-icon>
           <Search/>
         </el-icon>
         <span>查询</span>
       </el-button>
-      <el-button type="primary">
+      <el-button type="primary" @click="listAllStudents">
         <el-icon>
           <List/>
         </el-icon>
