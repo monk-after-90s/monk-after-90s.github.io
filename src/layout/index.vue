@@ -6,11 +6,11 @@ import Menu from "./menu/Menu.vue"
 <template>
   <el-container class="layout">
     <el-aside class="aside" width=auto>
-      <Menu/>
+      <Menu />
     </el-aside>
     <el-container>
       <el-header class="header">
-        <Header/>
+        <Header />
       </el-header>
       <el-main class="main">
         <router-view></router-view>
@@ -23,6 +23,7 @@ import Menu from "./menu/Menu.vue"
 <style scoped>
 .aside {
   height: 100vh;
+  background-color: #304156;
 }
 
 .layout {
