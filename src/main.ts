@@ -7,8 +7,10 @@ import router from "./router"
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import store from "./store"
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import api from './api'
 
 const app = createApp(App)
+app.config.globalProperties.api = api
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
