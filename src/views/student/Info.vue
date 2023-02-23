@@ -1,10 +1,23 @@
 <script lang="ts" setup>
 import {CirclePlus, List, Search, Edit, More, Delete} from '@element-plus/icons-vue'
 import {ElMessage} from 'element-plus'
-import {fa, tr} from 'element-plus/es/locale';
 import {ref, reactive, getCurrentInstance} from 'vue'
+import type {FormInstance, FormRules} from 'element-plus'
 
 const Api = getCurrentInstance()?.proxy?.api
+const validateSNoExists = (rule: any, value: any, callback: any) => {
+  // 如果是修改，忽略校验
+  if (Data.isEdit) callback();
+  // 连接Student接口
+  Api.students.getAll({sno: value}).then((res) => {
+    // 判断是否存在
+    if (res.data.count > 0) {
+      callback(new Error("学号已存在！"))
+    } else {
+      callback()
+    }
+  })
+}
 
 let Data = reactive({
   // =============查询区域==============
@@ -40,7 +53,50 @@ let Data = reactive({
   isView: ref(false),
   isEdit: ref(false),
   layerFacultyMajor: reactive([]),
-  layerMajorSelected: ref("")
+  layerMajorSelected: ref(""),
+
+  // 弹出层表单的验证
+  rules: reactive({
+    sno: [
+      {required: true, message: "学号不能为空", trigger: "blur"},
+      {
+        pattern: /^[9][5]\d{4}$/,
+        message: "学号必须要是95开头的6位数字",
+        trigger: "blur",
+      },
+      {validator: validateSNoExists, trigger: 'blur'}
+    ],
+    name: [
+      {required: true, message: "姓名不能为空", trigger: "blur"},
+      {
+        pattern: /^[\u4e00-\u9fa5]{2,5}$/,
+        message: "姓名需要2-5个汉字",
+        trigger: "blur",
+      },
+    ],
+    gender: [{required: true, message: "性别不能为空", trigger: "blur"}],
+    birthday: [
+      {required: true, message: "出生日期不能为空", trigger: "blur"},
+    ],
+    major: [{required: true, message: "专业信息不能为空", trigger: "blur"}],
+    mobile: [
+      {required: true, message: "手机号码不能为空", trigger: "blur"},
+      {
+        pattern: /^[1][3456789]\d{9}$/,
+        message: "手机号码必须要符合规范",
+        trigger: "blur",
+      },
+    ],
+    email: [
+      {required: true, message: "邮箱地址不能为空", trigger: "blur"},
+      {
+        pattern: /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/,
+        message: "邮箱地址必须要符合规范",
+        trigger: "blur",
+      },
+    ],
+    address: [{required: true, message: "住址不能为空", trigger: "blur"}],
+  }),
 })
 //分页中修改pageSize
 const handleSizeChange = (size: any) => {
@@ -167,6 +223,21 @@ const getTreeMajor = async () => {
     Data.layerFacultyMajor.push(faculty_select)
   }
 }
+let {proxy} = getCurrentInstance() as any
+
+const studentFormRef = ref<FormInstance>()
+
+
+const commitLayer = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      alert("所有的都符合要求")
+    }
+  })
+}
+
+
 const autoRun = () => {
   getStudents()
   getFaculties()
@@ -242,49 +313,42 @@ autoRun()
     <template #title>
       <div style="font-size: 18px;color:#409eff;font-weight: bold;text-align: left">{{ Data.layerTitle }}</div>
     </template>
-    <el-form inline label-width="100px" v-model="Data.studentForm">
-      <el-form-item label="学号:">
+    <el-form inline label-width="100px" :model="Data.studentForm" :rules="Data.rules" ref="studentFormRef">
+      <el-form-item label="学号:" prop="sno">
         <el-input v-model="Data.studentForm.sno" suffix-icon="Edit" placeholder="请输入"
                   :disabled="Data.isEdit || Data.isView"/>
       </el-form-item>
-      <el-form-item label="姓名:">
+      <el-form-item label="姓名:" prop="name">
         <el-input v-model="Data.studentForm.name" suffix-icon="Edit" placeholder="请输入" :disabled="Data.isView"/>
       </el-form-item>
-      <el-form-item label="性别:">
+      <el-form-item label="性别:" prop="gender">
         <el-select placeholder="请选择" v-model="Data.studentForm.gender" :disabled="Data.isView">
           <el-option label="男" value="男"/>
           <el-option label="女" value="女"/>
         </el-select>
       </el-form-item>
-      <el-form-item label="出生日期:">
+      <el-form-item label="出生日期:" prop="birthday">
         <el-date-picker type="date" placeholder="请选择日期" v-model="Data.studentForm.birthday"
                         :disabled="Data.isView"/>
       </el-form-item>
       <el-form-item label="学院/专业:">
-        <el-cascader
-            :disabled="Data.isView"
-            v-model="Data.layerMajorSelected"
-            placeholder="选择专业"
-            :options="Data.layerFacultyMajor"
-            filterable
-            style="width: 15vw"
-        />
+        <el-cascader :disabled="Data.isView" v-model="Data.layerMajorSelected" placeholder="选择专业"
+                     :options="Data.layerFacultyMajor" filterable style="width: 15vw"/>
       </el-form-item>
-      <el-form-item label="电话:">
+      <el-form-item label="电话:" prop="mobile">
         <el-input suffix-icon="Edit" placeholder="请输入" v-model="Data.studentForm.mobile" :disabled="Data.isView"/>
       </el-form-item>
-      <el-form-item label="邮箱:">
+      <el-form-item label="邮箱:" prop="email">
         <el-input suffix-icon="Edit" placeholder="请输入" v-model="Data.studentForm.email" :disabled="Data.isView"/>
       </el-form-item>
-      <el-form-item label="家庭住址:">
+      <el-form-item label="家庭住址:" prop="address">
         <el-input suffix-icon="Edit" placeholder="请输入" v-model="Data.studentForm.address" :disabled="Data.isView"/>
       </el-form-item>
-
     </el-form>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="Data.dialogFromVisible = false">取消</el-button>
-        <el-button type="primary" v-show="!Data.isView">
+        <el-button type="primary" v-show="!Data.isView" @click="commitLayer(studentFormRef)">
           提交
         </el-button>
       </span>
