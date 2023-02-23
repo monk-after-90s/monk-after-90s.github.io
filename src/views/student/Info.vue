@@ -234,7 +234,18 @@ const commitLayer = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
-      alert("所有的都符合要求")
+      //添加学生
+      Data.studentForm.major_id = Data.layerMajorSelected[1]
+      Api.students.add(Data.studentForm).then(res => {
+        if (res.status === 201) {
+          closeLayer()
+          getStudents()
+          ElMessage({
+            message: '学生添加成功',
+            type: 'success'
+          })
+        }
+      })
     }
   })
 }
@@ -331,7 +342,7 @@ autoRun()
       </el-form-item>
       <el-form-item label="出生日期:" prop="birthday">
         <el-date-picker type="date" placeholder="请选择日期" v-model="Data.studentForm.birthday"
-                        :disabled="Data.isView"/>
+                        :disabled="Data.isView" value-format="YYYY-MM-DD"/>
       </el-form-item>
       <el-form-item label="学院/专业:">
         <el-cascader :disabled="Data.isView" v-model="Data.layerMajorSelected" placeholder="选择专业"
