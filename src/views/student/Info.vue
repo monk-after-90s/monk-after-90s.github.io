@@ -185,6 +185,8 @@ const closeLayer = () => {
   Data.isView = false
   Data.isEdit = false
 
+  studentFormRef.value?.resetFields()
+
   Data.studentForm.sno = ""
   Data.studentForm.name = ""
   Data.studentForm.gender = ""
