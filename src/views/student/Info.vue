@@ -2,8 +2,10 @@
 import {CirclePlus, List, Search, Edit, More, Delete} from '@element-plus/icons-vue'
 import {ElMessage} from 'element-plus'
 import {ref, reactive, getCurrentInstance} from 'vue'
-import type {FormInstance} from 'element-plus'
+import type {FormInstance, UploadRequestOptions, UploadProps} from 'element-plus'
 import {ElMessageBox} from 'element-plus'
+import {Plus} from '@element-plus/icons-vue'
+import request from '../../utils/request'
 
 const Api = getCurrentInstance()?.proxy?.api
 const validateSNoExists = (rule: any, value: any, callback: any) => {
@@ -49,7 +51,8 @@ let Data = reactive({
     major: ref(''),
     mobile: ref(''),
     email: ref(''),
-    address: ref('')
+    address: ref(''),
+    image: ref('')
   }),
   isView: ref(false),
   isEdit: ref(false),
@@ -134,7 +137,7 @@ const getStudents = () => {
         faculty: Data.facultySelected,
         major: Data.majorSelected
       }
-  ).then((res) => {
+  ).then((res: any) => {
     if (res.status === 200) {
       Data.students = res.data.results
       Data.total = res.data.count
@@ -143,7 +146,7 @@ const getStudents = () => {
         type: 'success',
       })
     }
-  }).catch((error) => {
+  }).catch((error: any) => {
     console.log(error)
   })
 }
@@ -289,7 +292,15 @@ const commitLayer = async (formEl: FormInstance | undefined) => {
     }
   })
 }
-
+const uploadStudentImage = (file: any) => {
+  let fileReq = new FormData()
+  fileReq.append('file', file.file)
+  Api.students.upload(fileReq).then((res: any) => {
+    if (res.status === 200) {
+      Data.studentForm.image = request.baseUrl + `/media/images/${res.data.data}`
+    }
+  })
+}
 
 const autoRun = () => {
   getStudents()
@@ -366,6 +377,18 @@ autoRun()
     <template #title>
       <div style="font-size: 18px;color:#409eff;font-weight: bold;text-align: left">{{ Data.layerTitle }}</div>
     </template>
+
+    <el-upload
+        class="avatar-uploader"
+        :http-request="uploadStudentImage"
+        :show-file-list="false"
+    >
+      <img v-if="Data.studentForm.image" :src="Data.studentForm.image" class="avatar" alt="头像"/>
+      <el-icon v-else class="avatar-uploader-icon">
+        <Plus/>
+      </el-icon>
+    </el-upload>
+
     <el-form inline label-width="100px" :model="Data.studentForm" :rules="Data.rules" ref="studentFormRef">
       <el-form-item label="学号:" prop="sno">
         <el-input v-model="Data.studentForm.sno" suffix-icon="Edit" placeholder="请输入"
@@ -409,4 +432,33 @@ autoRun()
   </el-dialog>
 </template>
 
-<style scoped></style>
+<style scoped>
+.avatar-uploader .avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>
+
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
+}
+</style>

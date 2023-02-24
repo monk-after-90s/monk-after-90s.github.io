@@ -1,10 +1,13 @@
 import axios from "axios"
-import { ElMessage } from "element-plus"
+import {ElMessage} from "element-plus"
+
+const baseUrl = 'http://localhost:8000'
 
 const request = axios.create({
-    baseURL: 'http://localhost:8000/api/v1',
+    baseURL: baseUrl + '/api/v1',
     timeout: 5000
 })
+request.baseUrl = baseUrl
 //拦截器
 request.interceptors.request.use(
     (config: any) => {
