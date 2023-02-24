@@ -2,7 +2,8 @@
 import {CirclePlus, List, Search, Edit, More, Delete} from '@element-plus/icons-vue'
 import {ElMessage} from 'element-plus'
 import {ref, reactive, getCurrentInstance} from 'vue'
-import type {FormInstance, FormRules} from 'element-plus'
+import type {FormInstance} from 'element-plus'
+import {ElMessageBox} from 'element-plus'
 
 const Api = getCurrentInstance()?.proxy?.api
 const validateSNoExists = (rule: any, value: any, callback: any) => {
@@ -179,7 +180,27 @@ const editStudent = (row: any) => {
 
   Data.layerMajorSelected = row.major.id
 }
-
+const deleteStudent = (row: any) => {
+  ElMessageBox.confirm(
+      `确认要删除学生【学号】:${row.sno} 【姓名】:${row.name}?`,
+      'Warning',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  ).then(() => {
+    Api.students.del(row.sno).then((res: any) => {
+      if (res.status === 204) {
+        getStudents()
+        ElMessage({
+          message: '删除学生信息成功',
+          type: 'success'
+        })
+      }
+    })
+  })
+}
 const closeLayer = () => {
   Data.dialogFromVisible = false
   Data.isView = false
@@ -330,7 +351,7 @@ autoRun()
       <template #default="scope">
         <el-button type="primary" :icon="More" circle size="small" @click="viewStudent(scope.row)"/>
         <el-button type="warning" :icon="Edit" circle size="small" @click="editStudent(scope.row)"/>
-        <el-button type="danger" :icon="Delete" circle size="small"/>
+        <el-button type="danger" :icon="Delete" circle size="small" @click="deleteStudent(scope.row)"/>
       </template>
     </el-table-column>
   </el-table>
