@@ -233,19 +233,38 @@ const studentFormRef = ref<FormInstance>()
 const commitLayer = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
-    if (valid) {
-      //添加学生
+    if (Data.layerMajorSelected[1]) {
       Data.studentForm.major_id = Data.layerMajorSelected[1]
-      Api.students.add(Data.studentForm).then(res => {
-        if (res.status === 201) {
-          closeLayer()
-          getStudents()
-          ElMessage({
-            message: '学生添加成功',
-            type: 'success'
-          })
-        }
-      })
+    } else {
+      Data.studentForm.major_id = Data.layerMajorSelected
+    }
+
+
+    if (valid) {
+      if (Data.isEdit) {
+        Api.students.edit(Data.studentForm.sno, Data.studentForm).then((res: any | Object) => {
+          if (res.status === 201) {
+            closeLayer()
+            getStudents()
+            ElMessage({
+              message: '修改学生信息成功',
+              type: 'success'
+            })
+          }
+        })
+      } else {
+        //添加学生
+        Api.students.add(Data.studentForm).then(res => {
+          if (res.status === 201) {
+            closeLayer()
+            getStudents()
+            ElMessage({
+              message: '学生添加成功',
+              type: 'success'
+            })
+          }
+        })
+      }
     }
   })
 }
