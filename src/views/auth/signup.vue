@@ -101,7 +101,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
         <el-button type="primary" @click="submitForm(ruleFormRef)" :disabled="signupDisabled"
         >注册用户
         </el-button>
-        <el-button type="primary">已有用户去登陆</el-button>
+        <router-link :to="{name:'Login'}">
+          <el-button type="primary">已有用户去登陆</el-button>
+        </router-link>
       </el-form-item>
     </el-form>
   </div>
