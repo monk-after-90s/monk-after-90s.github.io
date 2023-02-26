@@ -1,5 +1,6 @@
 import axios from "axios"
 import {ElMessage} from "element-plus"
+import router from "../router"
 
 export const baseUrl = 'http://localhost:8000'
 
@@ -14,9 +15,14 @@ request.interceptors.request.use(
     (config: any) => {
         let token = localStorage.getItem('token')
         if (token) {
-            config.headers.common['token'] = token
+            config.headers.Authorization = `jwt ${token}`
+            return config
+        } else if (config.url === 'auth/login/' || config.url === 'auth/signup/') {
+            return config
+        } else {
+            router.push({name: 'Login'})
+            ElMessage.error("请登录")
         }
-        return config
     },
     (error: any) => {
         Promise.reject(error)
@@ -79,8 +85,7 @@ request.interceptors.response.use((response: any) => response,
                     ElMessage.error(error.data.msg)
             }
         } else {
-            error.data.msg = "连接到服务器失败";
-            ElMessage.error(error.data.msg)
+            ElMessage.error("连接到服务器失败")
         }
         return Promise.reject(error);
 
