@@ -8,5 +8,12 @@ export default {
             url: `auth/signup/`,
             data
         })
-    }
+    },
+    login(data: Object) {
+        return request({
+            method: 'post',
+            url: 'auth/login/',
+            data
+        })
+    },
 }
