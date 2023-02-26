@@ -42,6 +42,11 @@ request.interceptors.response.use((response: any) => response,
                     break
                 case 403:
                     error.data.msg = '拒绝访问';
+                    if (error.response.data.code === "702") {
+                        ElMessage.error(error.response.data.error)
+                        router.push({name: 'Login'})
+                        break
+                    }
                     ElMessage.error(error.data.msg)
                     break
                 case 404:
