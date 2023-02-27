@@ -37,6 +37,10 @@ export const useJWT = defineStore('jwt', {
         setJWT(jwt: string) {
             localStorage.setItem('token', jwt)
             this.updateStateFromLocal()
+        },
+        delJWT() {
+            localStorage.removeItem('token')
+            this.$reset()
         }
     }
 })
