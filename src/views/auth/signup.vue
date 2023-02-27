@@ -4,6 +4,7 @@ import type {FormInstance} from 'element-plus'
 import Api from "../../api"
 import {ElMessage} from 'element-plus'
 import router from "../../router"
+import {useJWT} from "../../pinia-store"
 
 const ruleFormRef = ref<FormInstance>()
 let signupDisabled = ref(false)
@@ -45,10 +46,10 @@ const rules = reactive({
 })
 
 const submitForm = (formEl: FormInstance | undefined) => {
-  localStorage.removeItem('token')
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
+      let jwtStore = useJWT()
       //校验成功
       Api.auth.signup(ruleForm).then(res => {
         if (res.status === 200 && res.data.code === 702) {
@@ -57,7 +58,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
             type: 'error',
           })
         } else if (res.status === 200 && res.data.code === 200) {
-          localStorage.setItem('token', res.data.data)
+          //存储token
+          jwtStore.setJWT(res.data.data)
           ElMessage({
             message: res.data.msg,
             type: 'success',
