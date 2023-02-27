@@ -5,12 +5,13 @@ export const useJWT = defineStore('jwt', {
     state: () => {
         return ({
             jwt: '',
-            id: '',
+            exp: 0,
+            id: 0,
             username: ''
         })
     },
     getters: {
-        getState: (state) => {
+        getState(state) {
             let localToken = localStorage.getItem('token')
             if (localToken != state.jwt) {
                 // @ts-ignore
@@ -21,12 +22,17 @@ export const useJWT = defineStore('jwt', {
     },
     actions: {
         updateStateFromLocal() {
-            let localToken = localStorage.getItem('token')
+            let localToken = localStorage.getItem('token') ?? ''
             // @ts-ignore
-            this.jwt = localToken
-            let payLoad = jwtDecrypt(localToken)
-            this.username = payLoad.username
-            this.id = payLoad.id
+            if (localToken) {
+                let payLoad = jwtDecrypt(localToken)
+                this.jwt = localToken
+                this.username = payLoad.username
+                this.id = payLoad.id
+                this.exp = payLoad.exp
+            } else {
+                this.$reset()
+            }
         },
         setJWT(jwt: string) {
             localStorage.setItem('token', jwt)
