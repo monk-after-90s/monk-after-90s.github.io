@@ -20,8 +20,6 @@ watch(() => route.path, getBredCum)
 <template>
   <el-breadcrumb separator="/">
     <el-breadcrumb-item v-for="tab in tabs">{{ tab.meta.title }}</el-breadcrumb-item>
-    <!--    <el-breadcrumb-item>基数数据</el-breadcrumb-item>-->
-    <!--    <el-breadcrumb-item>院系管理</el-breadcrumb-item>-->
   </el-breadcrumb>
 </template>
 

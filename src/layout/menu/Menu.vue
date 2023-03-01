@@ -20,7 +20,6 @@ let isCollapse = computed(() => {
       active-text-color="#ffd04b"
       background-color="#304156"
       class="el-menu-vertical-demo"
-      default-active="2"
       text-color="#fff"
       :collapse="isCollapse"
       router>
