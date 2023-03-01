@@ -24,43 +24,38 @@ const validateSNoExists = (rule: any, value: any, callback: any) => {
 
 let Data = reactive({
   // =============查询区域==============
-  q_str: ref(''),
+  q_str: '',
   facultyOptions: [{id: 0, name: ''}],
-  facultySelected: ref(''),
-  majorOptions: reactive([
-    {
-      id: 0,
-      name: ''
-    }
-  ]),
-  majorSelected: ref(''),
+  facultySelected: '',
+  majorOptions: [{id: 0, name: ''}],
+  majorSelected: '',
   // =============表格区域==============
   students: [],
   //=============分页区域===============
-  currentPage: ref(1),
-  pageSize: ref(17),
+  currentPage: 1,
+  pageSize: 17,
   total: 0,
-  dialogFromVisible: ref(false),
-  layerTitle: ref(''),
-  studentForm: reactive({
-    sno: ref(''),
-    name: ref(''),
-    gender: ref(''),
-    birthday: ref(''),
-    faculty: ref(''),
-    major: ref(''),
-    mobile: ref(''),
-    email: ref(''),
-    address: ref(''),
-    image: ref('')
-  }),
-  isView: ref(false),
-  isEdit: ref(false),
-  layerFacultyMajor: reactive([]),
-  layerMajorSelected: ref(""),
+  dialogFromVisible: false,
+  layerTitle: '',
+  studentForm: {
+    sno: '',
+    name: '',
+    gender: '',
+    birthday: '',
+    faculty: '',
+    major: '',
+    mobile: '',
+    email: '',
+    address: '',
+    image: ''
+  },
+  isView: false,
+  isEdit: false,
+  layerFacultyMajor: [],
+  layerMajorSelected: "",
 
   // 弹出层表单的验证
-  rules: reactive({
+  rules: {
     sno: [
       {required: true, message: "学号不能为空", trigger: "blur"},
       {
@@ -100,7 +95,7 @@ let Data = reactive({
       },
     ],
     address: [{required: true, message: "住址不能为空", trigger: "blur"}],
-  }),
+  },
 })
 //分页中修改pageSize
 const handleSizeChange = (size: any) => {
