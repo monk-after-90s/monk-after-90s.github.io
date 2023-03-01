@@ -22,7 +22,7 @@ const logout = () => {
     </span>
     <template #dropdown>
       <el-dropdown-menu>
-<!--        <el-dropdown-item>用户信息</el-dropdown-item>-->
+        <!--        <el-dropdown-item>用户信息</el-dropdown-item>-->
         <!--        <el-dropdown-item>更改密码</el-dropdown-item>-->
         <el-dropdown-item @click="logout">安全退出</el-dropdown-item>
       </el-dropdown-menu>

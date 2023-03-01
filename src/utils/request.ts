@@ -15,7 +15,7 @@ request.interceptors.request.use(
     (config: any) => {
         let token = localStorage.getItem('token')
         if (token) {
-            config.headers.Authorization = `jwt ${token}`
+            config.headers.Authorization = `Bearer ${token}`
             return config
         } else if (config.url === 'auth/login/' || config.url === 'auth/signup/') {
             return config

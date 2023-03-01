@@ -59,7 +59,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
           })
         } else if (res.status === 200 && res.data.code === 200) {
           //存储token
-          jwtStore.setJWT(res.data.data)
+          jwtStore.setJWT(res.data.data.access)
           ElMessage({
             message: res.data.msg,
             type: 'success',

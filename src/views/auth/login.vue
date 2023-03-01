@@ -34,20 +34,13 @@ const submitForm = (formEl: FormInstance | undefined) => {
   formEl.validate((valid) => {
     if (valid) {
       Api.auth.login(ruleForm).then(res => {
-        if (res.status === 200 && res.data.code === 701) {
-          ElMessage({
-            message: res.data.error,
-            type: 'error',
-          })
-        } else if (res.status === 200 && res.data.code === 700) {
-          //存储token
-          jwtStore.setJWT(res.data.data)
-          ElMessage({
-            message: "登陆成功",
-            type: 'success',
-          })
-          router.push({name: 'Layout'})
-        }
+        //存储token
+        jwtStore.setJWT(res.data.access)
+        ElMessage({
+          message: "登陆成功",
+          type: 'success',
+        })
+        router.push({name: 'Layout'})
       })
     } else {
       return false
