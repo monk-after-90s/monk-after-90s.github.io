@@ -13,8 +13,9 @@ function changeCollapse() {
 </script>
 
 <template>
-  <el-icon>
-    <component class="icons" :is='isCollapse?"Expand":"Fold"' @click="changeCollapse"></component>
+  <el-icon @click="changeCollapse">
+    <Expand v-show="isCollapse"/>
+    <Fold v-show="!isCollapse"/>
   </el-icon>
 </template>
 
