@@ -6,6 +6,7 @@ export default class apiBase {
     constructor(name: string) {
         this.name = name
     }
+
     public getAll = (params?: any) => {
         return request({
             method: 'get',
@@ -28,7 +29,7 @@ export default class apiBase {
     }
     public edit = (id: any, data: any) => {
         return request({
-            method: 'put',
+            method: 'patch',
             url: `${this.name}/${id}/`,
             data
         })
