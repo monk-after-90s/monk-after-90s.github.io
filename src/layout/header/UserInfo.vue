@@ -7,7 +7,7 @@ const globalProperties = useGlobalProperties()
 const jwtStore = globalProperties.jwtStore
 const logout = () => {
   jwtStore.delJWT()
-  ElMessage.warning('请登录')
+  ElMessage.warning('已退出登陆')
   router.push({name: 'Login'})
 }
 </script>
