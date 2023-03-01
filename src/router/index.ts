@@ -8,13 +8,13 @@ const routes: Array<RouteRecordRaw> = [
         path: '/',
         name: 'Layout',
         component: Layout,
-        redirect: '/dashboard',
+        redirect: {name: 'Dashboard'},
         meta: {
             title: '首页',
             requiredAuth: true
         },
         children: [{
-            path: '/dashboard',
+            path: 'dashboard',
             component: () => import('../views/index/Dashboard.vue'),
             name: 'Dashboard',
             meta: {
@@ -43,13 +43,14 @@ const routes: Array<RouteRecordRaw> = [
         path: '/basic',
         component: Layout,
         name: 'Basic',
+        redirect: {name: 'Faculty'},
         meta: {
             title: '基础数据',
             requiredAuth: true
         },
         children: [
             {
-                path: '/basic/faculty',
+                path: 'faculty',
                 component: () => import("../views/basic/Faculty.vue"),
                 name: 'Faculty',
                 meta: {
@@ -58,7 +59,7 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
-                path: '/basic/major',
+                path: 'major',
                 component: () => import("../views/basic/Major.vue"),
                 name: 'Major',
                 meta: {
@@ -67,7 +68,7 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
-                path: '/basic/teacher',
+                path: 'teacher',
                 component: () => import("../views/basic/Teacher.vue"),
                 name: 'Teacher',
                 meta: {
@@ -82,13 +83,14 @@ const routes: Array<RouteRecordRaw> = [
         path: '/student',
         component: Layout,
         name: 'Student',
+        redirect: {name: 'Info'},
         meta: {
             title: '学生管理',
             requiredAuth: true
         },
         children: [
             {
-                path: '/student/info',
+                path: 'info',
                 component: () => import("../views/student/Info.vue"),
                 name: 'Info',
                 meta: {
@@ -97,7 +99,7 @@ const routes: Array<RouteRecordRaw> = [
                 }
             },
             {
-                path: '/student/exam',
+                path: 'exam',
                 component: () => import("../views/student/Exam.vue"),
                 name: 'Exam',
                 meta: {
@@ -106,7 +108,7 @@ const routes: Array<RouteRecordRaw> = [
                 }
             },
             {
-                path: '/student/image',
+                path: 'image',
                 component: () => import("../views/student/Image.vue"),
                 name: 'Images',
                 meta: {
@@ -120,6 +122,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/user',
         component: Layout,
+        redirect: {name: 'Account'},
         name: 'User',
         meta: {
             title: '用户角色',
@@ -127,7 +130,7 @@ const routes: Array<RouteRecordRaw> = [
         },
         children: [
             {
-                path: '/user/account',
+                path: 'account',
                 component: () => import("../views/user/Account.vue"),
                 name: 'Account',
                 meta: {
@@ -136,7 +139,7 @@ const routes: Array<RouteRecordRaw> = [
                 },
             },
             {
-                path: '/user/roles',
+                path: 'roles',
                 component: () => import("../views/user/Roles.vue"),
                 name: 'Roles',
                 meta: {
@@ -145,7 +148,7 @@ const routes: Array<RouteRecordRaw> = [
                 }
             },
             {
-                path: '/user/menu',
+                path: 'menu',
                 component: () => import("../views/user/Menu.vue"),
                 name: 'Menu',
                 meta: {
@@ -154,7 +157,7 @@ const routes: Array<RouteRecordRaw> = [
                 }
             },
             {
-                path: '/user/permission',
+                path: 'permission',
                 component: () => import("../views/user/Permission.vue"),
                 name: 'Permission',
                 meta: {
