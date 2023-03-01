@@ -2,17 +2,17 @@
 import {CirclePlus, List, Search, Edit, More, Delete} from '@element-plus/icons-vue'
 import {ElMessage} from 'element-plus'
 import {ref, reactive, getCurrentInstance} from 'vue'
-import type {FormInstance, UploadRequestOptions, UploadProps} from 'element-plus'
+import type {FormInstance} from 'element-plus'
 import {ElMessageBox} from 'element-plus'
 import {Plus} from '@element-plus/icons-vue'
 import request from '../../utils/request'
 
-const Api = getCurrentInstance()?.proxy?.api
+let {proxy: {api}} = getCurrentInstance() as any
 const validateSNoExists = (rule: any, value: any, callback: any) => {
   // 如果是修改，忽略校验
   if (Data.isEdit) callback();
   // 连接Student接口
-  Api.students.getAll({sno: value}).then((res) => {
+  api.students.getAll({sno: value}).then((res: { data: { count: number; }; }) => {
     // 判断是否存在
     if (res.data.count > 0) {
       callback(new Error("学号已存在！"))
@@ -25,7 +25,7 @@ const validateSNoExists = (rule: any, value: any, callback: any) => {
 let Data = reactive({
   // =============查询区域==============
   q_str: ref(''),
-  facultyOptions: reactive([{id: 0, name: ''}]),
+  facultyOptions: [{id: 0, name: ''}],
   facultySelected: ref(''),
   majorOptions: reactive([
     {
@@ -35,11 +35,11 @@ let Data = reactive({
   ]),
   majorSelected: ref(''),
   // =============表格区域==============
-  students: reactive([]),
+  students: [],
   //=============分页区域===============
   currentPage: ref(1),
   pageSize: ref(17),
-  total: ref(0),
+  total: 0,
   dialogFromVisible: ref(false),
   layerTitle: ref(''),
   studentForm: reactive({
@@ -116,7 +116,7 @@ function handleCurrentChange(page: any) {
 }
 
 const getFaculties = () => {
-  Api.faculties.getAll().then(res => {
+  api.faculties.getAll().then((res: { data: { results: { id: number; name: string; }[]; }; }) => {
     if (res && res.data) {
       Data.facultyOptions = res.data.results
     }
@@ -124,12 +124,12 @@ const getFaculties = () => {
 }
 
 const getMajors = () => {
-  Api.majors.getAll({faculty: Data.facultySelected}).then((res) => {
+  api.majors.getAll({faculty: Data.facultySelected}).then((res: { data: { results: { id: number; name: string; }[]; }; }) => {
     Data.majorOptions = res.data.results
   })
 }
 const getStudents = () => {
-  Api.students.getAll(
+  api.students.getAll(
       {
         page: Data.currentPage,
         size: Data.pageSize,
@@ -193,7 +193,7 @@ const deleteStudent = (row: any) => {
         type: 'warning',
       }
   ).then(() => {
-    Api.students.del(row.sno).then((res: any) => {
+    api.students.del(row.sno).then((res: any) => {
       if (res.status === 204) {
         getStudents()
         ElMessage({
@@ -225,13 +225,10 @@ const closeLayer = () => {
 const getTreeMajor = async () => {
   let allFaculties: any = []
   let allMajors: any = []
-  await Api.faculties.getAll().then((res: any) => {
-    allFaculties = res.data.results
-  })
-  await Api.majors.getAll().then((res: any) => {
-    allMajors = res.data.results
-  })
-
+  let faculties_promise = api.faculties.getAll()
+  let majors_promise = api.majors.getAll()
+  allFaculties = (await faculties_promise).data.results
+  allMajors = (await majors_promise).data.results
   for (let faculty of allFaculties) {
     //添加院系
     let faculty_select = {
@@ -249,7 +246,6 @@ const getTreeMajor = async () => {
     Data.layerFacultyMajor.push(faculty_select)
   }
 }
-let {proxy} = getCurrentInstance() as any
 
 const studentFormRef = ref<FormInstance>()
 
@@ -266,7 +262,7 @@ const commitLayer = async (formEl: FormInstance | undefined) => {
 
     if (valid) {
       if (Data.isEdit) {
-        Api.students.edit(Data.studentForm.sno, Data.studentForm).then((res: any | Object) => {
+        api.students.edit(Data.studentForm.sno, Data.studentForm).then((res: any | Object) => {
           if (res.status === 201) {
             closeLayer()
             getStudents()
@@ -278,7 +274,7 @@ const commitLayer = async (formEl: FormInstance | undefined) => {
         })
       } else {
         //添加学生
-        Api.students.add(Data.studentForm).then(res => {
+        api.students.add(Data.studentForm).then(res => {
           if (res.status === 201) {
             closeLayer()
             getStudents()
@@ -295,7 +291,7 @@ const commitLayer = async (formEl: FormInstance | undefined) => {
 const uploadStudentImage = (file: any) => {
   let fileReq = new FormData()
   fileReq.append('file', file.file)
-  Api.students.upload(fileReq).then((res: any) => {
+  api.students.upload(fileReq).then((res: any) => {
     if (res.status === 200) {
       Data.studentForm.image = request.baseUrl + `/media/images/${res.data.data}`
     }
@@ -378,11 +374,7 @@ autoRun()
       <div style="font-size: 18px;color:#409eff;font-weight: bold;text-align: left">{{ Data.layerTitle }}</div>
     </template>
 
-    <el-upload
-        class="avatar-uploader"
-        :http-request="uploadStudentImage"
-        :show-file-list="false"
-    >
+    <el-upload class="avatar-uploader" :http-request="uploadStudentImage" :show-file-list="false">
       <img v-if="Data.studentForm.image" :src="Data.studentForm.image" class="avatar" alt="头像"/>
       <el-icon v-else class="avatar-uploader-icon">
         <Plus/>
@@ -404,8 +396,8 @@ autoRun()
         </el-select>
       </el-form-item>
       <el-form-item label="出生日期:" prop="birthday">
-        <el-date-picker type="date" placeholder="请选择日期" v-model="Data.studentForm.birthday"
-                        :disabled="Data.isView" value-format="YYYY-MM-DD"/>
+        <el-date-picker type="date" placeholder="请选择日期" v-model="Data.studentForm.birthday" :disabled="Data.isView"
+                        value-format="YYYY-MM-DD"/>
       </el-form-item>
       <el-form-item label="学院/专业:">
         <el-cascader :disabled="Data.isView" v-model="Data.layerMajorSelected" placeholder="选择专业"
