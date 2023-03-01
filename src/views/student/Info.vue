@@ -234,7 +234,7 @@ const getTreeMajor = async () => {
     let faculty_select = {
       value: `${faculty.id}-${faculty.name}`,
       label: faculty.name,
-      children: []//1060 5g 590gme三风扇 收据 要报销
+      children: []
     }
     //添加专业
     for (let major of allMajors) {
