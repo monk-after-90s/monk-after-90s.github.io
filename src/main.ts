@@ -9,6 +9,7 @@ import store from "./store"
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import api from './api'
 import {createPinia} from 'pinia'
+import {useJWT} from "./pinia-store"
 
 const app = createApp(App)
 app.config.globalProperties.api = api
@@ -16,4 +17,9 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
 
-app.use(ElementPlus, {locale: zhCn}).use(router).use(store).use(createPinia()).mount('#app')
+app.use(ElementPlus, {locale: zhCn}).use(router).use(store).use(createPinia())
+
+const jwtStore = useJWT()
+app.config.globalProperties.jwtStore = jwtStore
+
+app.mount('#app')

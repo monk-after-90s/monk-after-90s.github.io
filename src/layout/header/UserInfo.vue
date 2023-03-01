@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import router from "../../router"
 import {ElMessage} from "element-plus"
-import {useJWT} from "../../pinia-store"
+import useGlobalProperties from "../../utils/globalVar"
 
-const jwtStore = useJWT()
+const globalProperties = useGlobalProperties()
+const jwtStore = globalProperties.jwtStore
 const logout = () => {
   jwtStore.delJWT()
   ElMessage.warning('请登录')
