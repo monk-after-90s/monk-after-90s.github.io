@@ -12,8 +12,10 @@ const request = axios.create({
 request.baseUrl = baseUrl
 //拦截器
 request.interceptors.request.use(
-    (config: any) => {
-        let token = localStorage.getItem('token')
+    async (config: any) => {
+        let {useJWT} = await import("../pinia-store")
+        let token = useJWT().getState.jwt
+
         if (token) {
             config.headers.Authorization = `Bearer ${token}`
             return config
