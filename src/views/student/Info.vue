@@ -178,7 +178,7 @@ const editStudent = (row: any) => {
 
   Data.layerMajorSelected = row.major.id
 }
-const deleteStudent = (row: any) => {
+const deleteStudent = (row: { sno: any; name: any; }) => {
   ElMessageBox.confirm(
       `确认要删除学生【学号】:${row.sno} 【姓名】:${row.name}?`,
       'Warning',
@@ -288,6 +288,7 @@ const uploadStudentImage = (file: any) => {
   fileReq.append('file', file.file)
   api.students.upload(fileReq).then((res: any) => {
     if (res.status === 200) {
+      // @ts-ignore
       Data.studentForm.image = request.baseUrl + `/media/images/${res.data.data}`
     }
   })
@@ -365,7 +366,7 @@ autoRun()
 
   <!-- 弹出层 -->
   <el-dialog v-model="Data.dialogFromVisible" width="40%" @close="closeLayer">
-    <template #title>
+    <template #header>
       <div style="font-size: 18px;color:#409eff;font-weight: bold;text-align: left">{{ Data.layerTitle }}</div>
     </template>
 
