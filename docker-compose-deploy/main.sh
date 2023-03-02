@@ -1,8 +1,10 @@
 #!/usr/bin/env sh
 
+cd -
+rm -rf dist
 # 发生错误时终止
 set -e
-
+npm install
 # 构建
 npm run build
 
