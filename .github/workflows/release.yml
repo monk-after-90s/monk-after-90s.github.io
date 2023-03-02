@@ -5,4 +5,4 @@ jobs:
     runs-on: ubuntu-latest # 运行系统环境
     steps: # 步骤
       - name: run deployment script
-      - run: ./deploy.sh # shell 脚本
+      - run: sh ./deploy.sh   # shell 脚本
