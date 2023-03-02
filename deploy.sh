@@ -20,7 +20,7 @@ git commit -m 'deploy'
 # 如果你要部署在 https://<USERNAME>.github.io
 # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git main
 
-# 如果你要部署在 https://monk-after-90s.github.io/StudentMgr
+# 如果你要部署在 https://<USERNAME>.github.io/<REPO>
 git push -f git@github.com:monk-after-90s/StudentMgr.git main:gh-pages
 
 cd -
