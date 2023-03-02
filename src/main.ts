@@ -6,10 +6,11 @@ import 'element-plus/dist/index.css'
 import router from "./router"
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import store from "./store"
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import api from './api'
 import {createPinia} from 'pinia'
 import {useJWT} from "./pinia-store"
+// @ts-ignore
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 const app = createApp(App)
 app.config.globalProperties.api = api

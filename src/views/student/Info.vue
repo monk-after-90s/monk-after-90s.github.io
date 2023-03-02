@@ -43,7 +43,7 @@ let Data = reactive({
     gender: '',
     birthday: '',
     faculty: '',
-    major: '',
+    major_id: '',
     mobile: '',
     email: '',
     address: '',
@@ -51,7 +51,7 @@ let Data = reactive({
   },
   isView: false,
   isEdit: false,
-  layerFacultyMajor: [],
+  layerFacultyMajor: Array(),
   layerMajorSelected: "",
 
   // 弹出层表单的验证
@@ -211,7 +211,7 @@ const closeLayer = () => {
   Data.studentForm.gender = ""
   Data.studentForm.birthday = ""
   Data.studentForm.faculty = ""
-  Data.studentForm.major = ""
+  Data.studentForm.major_id = ""
   Data.studentForm.mobile = ""
   Data.studentForm.email = ""
   Data.studentForm.address = ""
@@ -229,7 +229,7 @@ const getTreeMajor = async () => {
     let faculty_select = {
       value: `${faculty.id}-${faculty.name}`,
       label: faculty.name,
-      children: []
+      children: Array()
     }
     //添加专业
     for (let major of allMajors) {
@@ -269,7 +269,7 @@ const commitLayer = async (formEl: FormInstance | undefined) => {
         })
       } else {
         //添加学生
-        api.students.add(Data.studentForm).then(res => {
+        api.students.add(Data.studentForm).then((res: { status: number; }) => {
           if (res.status === 201) {
             closeLayer()
             getStudents()
